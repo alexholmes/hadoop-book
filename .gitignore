@@ -1,0 +1,13 @@
+.classpath
+.project
+.settings
+.svn
+build/
+*.ipr
+*.iml
+*.iws
+.DS_Store
+target/
+.idea/
+lib/
+target/
