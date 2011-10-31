@@ -21,9 +21,6 @@ host = 'localhost'
 
 class hdfs_get(Cmd):
 
-  # my custom prompt looks better than the default
-  prompt = 'hdfs>> '
-
   def __init__(self, server_name, server_port):
     Cmd.__init__(self)
     self.server_name = server_name
