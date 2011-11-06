@@ -113,7 +113,7 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
-      <version>2.4.1</version>
+      <version>2.3.0</version>
     </dependency>
     <dependency>
       <groupId>com.hadoop.compression.lzo</groupId>
@@ -124,6 +124,11 @@
       <groupId>edu.uci.ics.crawler4j</groupId>
       <artifactId>crawler4j</artifactId>
       <version>2.6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.twitter.elephantbird</groupId>
+      <artifactId>elephant-bird</artifactId>
+      <version>2.0.5</version>
     </dependency>
   </dependencies>
 

@@ -19,9 +19,14 @@ if [ -n "$MAVEN_HOME" ]; then
   MVN=${MAVEN_HOME}/bin/mvn
 fi
 
-if [ -z "$HADOOP_CONF_DIR" ]; then
-  echo "HADOOP_CONF_DIR must be defined and refer to your Hadoop config directory"
-  exit 2;
+if [ ! -d "$HADOOP_CONF_DIR" ]; then
+  if [ -d "/etc/hadoop/conf" ]; then
+    HADOOP_CONF_DIR="/etc/hadoop/conf"
+    echo "HADOOP_CONF_DIR environment not set, but found directory $HADOOP_CONF_DIR"
+  else
+    echo "HADOOP_CONF_DIR must be defined and refer to your Hadoop config directory"
+    exit 2;
+  fi
 fi
 
 # classpath initially contains $HBASE_CONF_DIR

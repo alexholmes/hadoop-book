@@ -1,0 +1,25 @@
+{"namespace": "com.manning.hip.ch3.avro.gen",
+ "protocol": "Simple",
+
+ "types": [
+     {"name": "Stock", "type": "record",
+      "fields": [
+          {"name": "symbol",    "type": "string"},
+          {"name": "date",      "type": "string"},
+          {"name": "open",      "type": "double"},
+          {"name": "high",      "type": "double"},
+          {"name": "close",     "type": "double"},
+          {"name": "volume",    "type": "int"},
+          {"name": "adjustedClose",  "type": "double",
+              "aliases": ["adjClose"]},
+          {"name": "dailyAvg",  "type": "double", "default":0.0}
+      ]
+     },
+     {"name": "StockAvg", "type": "record",
+      "fields": [
+          {"name": "symbol",    "type": "string"},
+          {"name": "avg",      "type": "double"}
+      ]
+     }
+ ]
+}
