@@ -13,3 +13,8 @@ message Stock {
   required int32 volume = 7;
   required double adjClose = 8;
 }
+
+message StockAvg {
+  required string symbol = 1;
+  required double avg = 2;
+}

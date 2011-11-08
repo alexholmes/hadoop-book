@@ -579,11 +579,344 @@ public final class StockProtos {
     // @@protoc_insertion_point(class_scope:proto.Stock)
   }
   
+  public static final class StockAvg extends
+      com.google.protobuf.GeneratedMessage {
+    // Use StockAvg.newBuilder() to construct.
+    private StockAvg() {
+      initFields();
+    }
+    private StockAvg(boolean noInit) {}
+    
+    private static final StockAvg defaultInstance;
+    public static StockAvg getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public StockAvg getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.manning.hip.ch3.proto.StockProtos.internal_static_proto_StockAvg_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.manning.hip.ch3.proto.StockProtos.internal_static_proto_StockAvg_fieldAccessorTable;
+    }
+    
+    // required string symbol = 1;
+    public static final int SYMBOL_FIELD_NUMBER = 1;
+    private boolean hasSymbol;
+    private java.lang.String symbol_ = "";
+    public boolean hasSymbol() { return hasSymbol; }
+    public java.lang.String getSymbol() { return symbol_; }
+    
+    // required double avg = 2;
+    public static final int AVG_FIELD_NUMBER = 2;
+    private boolean hasAvg;
+    private double avg_ = 0D;
+    public boolean hasAvg() { return hasAvg; }
+    public double getAvg() { return avg_; }
+    
+    private void initFields() {
+    }
+    public final boolean isInitialized() {
+      if (!hasSymbol) return false;
+      if (!hasAvg) return false;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (hasSymbol()) {
+        output.writeString(1, getSymbol());
+      }
+      if (hasAvg()) {
+        output.writeDouble(2, getAvg());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (hasSymbol()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getSymbol());
+      }
+      if (hasAvg()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(2, getAvg());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.manning.hip.ch3.proto.StockProtos.StockAvg parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.manning.hip.ch3.proto.StockProtos.StockAvg prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> {
+      private com.manning.hip.ch3.proto.StockProtos.StockAvg result;
+      
+      // Construct using com.manning.hip.ch3.proto.StockProtos.StockAvg.newBuilder()
+      private Builder() {}
+      
+      private static Builder create() {
+        Builder builder = new Builder();
+        builder.result = new com.manning.hip.ch3.proto.StockProtos.StockAvg();
+        return builder;
+      }
+      
+      protected com.manning.hip.ch3.proto.StockProtos.StockAvg internalGetResult() {
+        return result;
+      }
+      
+      public Builder clear() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "Cannot call clear() after build().");
+        }
+        result = new com.manning.hip.ch3.proto.StockProtos.StockAvg();
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(result);
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.manning.hip.ch3.proto.StockProtos.StockAvg.getDescriptor();
+      }
+      
+      public com.manning.hip.ch3.proto.StockProtos.StockAvg getDefaultInstanceForType() {
+        return com.manning.hip.ch3.proto.StockProtos.StockAvg.getDefaultInstance();
+      }
+      
+      public boolean isInitialized() {
+        return result.isInitialized();
+      }
+      public com.manning.hip.ch3.proto.StockProtos.StockAvg build() {
+        if (result != null && !isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return buildPartial();
+      }
+      
+      private com.manning.hip.ch3.proto.StockProtos.StockAvg buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        if (!isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return buildPartial();
+      }
+      
+      public com.manning.hip.ch3.proto.StockProtos.StockAvg buildPartial() {
+        if (result == null) {
+          throw new IllegalStateException(
+            "build() has already been called on this Builder.");
+        }
+        com.manning.hip.ch3.proto.StockProtos.StockAvg returnMe = result;
+        result = null;
+        return returnMe;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.manning.hip.ch3.proto.StockProtos.StockAvg) {
+          return mergeFrom((com.manning.hip.ch3.proto.StockProtos.StockAvg)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.manning.hip.ch3.proto.StockProtos.StockAvg other) {
+        if (other == com.manning.hip.ch3.proto.StockProtos.StockAvg.getDefaultInstance()) return this;
+        if (other.hasSymbol()) {
+          setSymbol(other.getSymbol());
+        }
+        if (other.hasAvg()) {
+          setAvg(other.getAvg());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              setSymbol(input.readString());
+              break;
+            }
+            case 17: {
+              setAvg(input.readDouble());
+              break;
+            }
+          }
+        }
+      }
+      
+      
+      // required string symbol = 1;
+      public boolean hasSymbol() {
+        return result.hasSymbol();
+      }
+      public java.lang.String getSymbol() {
+        return result.getSymbol();
+      }
+      public Builder setSymbol(java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  result.hasSymbol = true;
+        result.symbol_ = value;
+        return this;
+      }
+      public Builder clearSymbol() {
+        result.hasSymbol = false;
+        result.symbol_ = getDefaultInstance().getSymbol();
+        return this;
+      }
+      
+      // required double avg = 2;
+      public boolean hasAvg() {
+        return result.hasAvg();
+      }
+      public double getAvg() {
+        return result.getAvg();
+      }
+      public Builder setAvg(double value) {
+        result.hasAvg = true;
+        result.avg_ = value;
+        return this;
+      }
+      public Builder clearAvg() {
+        result.hasAvg = false;
+        result.avg_ = 0D;
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:proto.StockAvg)
+    }
+    
+    static {
+      defaultInstance = new StockAvg(true);
+      com.manning.hip.ch3.proto.StockProtos.internalForceInit();
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:proto.StockAvg)
+  }
+  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_proto_Stock_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_proto_Stock_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_proto_StockAvg_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_proto_StockAvg_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -597,8 +930,9 @@ public final class StockProtos {
       "o/stock.proto\022\005proto\"\177\n\005Stock\022\016\n\006symbol\030" +
       "\001 \002(\t\022\014\n\004date\030\002 \002(\t\022\014\n\004open\030\003 \002(\001\022\014\n\004hig" +
       "h\030\004 \002(\001\022\013\n\003low\030\005 \002(\001\022\r\n\005close\030\006 \002(\001\022\016\n\006v" +
-      "olume\030\007 \002(\005\022\020\n\010adjClose\030\010 \002(\001B(\n\031com.man" +
-      "ning.hip.ch3.protoB\013StockProtos"
+      "olume\030\007 \002(\005\022\020\n\010adjClose\030\010 \002(\001\"\'\n\010StockAv" +
+      "g\022\016\n\006symbol\030\001 \002(\t\022\013\n\003avg\030\002 \002(\001B(\n\031com.ma" +
+      "nning.hip.ch3.protoB\013StockProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -613,6 +947,14 @@ public final class StockProtos {
               new java.lang.String[] { "Symbol", "Date", "Open", "High", "Low", "Close", "Volume", "AdjClose", },
               com.manning.hip.ch3.proto.StockProtos.Stock.class,
               com.manning.hip.ch3.proto.StockProtos.Stock.Builder.class);
+          internal_static_proto_StockAvg_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_proto_StockAvg_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_proto_StockAvg_descriptor,
+              new java.lang.String[] { "Symbol", "Avg", },
+              com.manning.hip.ch3.proto.StockProtos.StockAvg.class,
+              com.manning.hip.ch3.proto.StockProtos.StockAvg.Builder.class);
           return null;
         }
       };

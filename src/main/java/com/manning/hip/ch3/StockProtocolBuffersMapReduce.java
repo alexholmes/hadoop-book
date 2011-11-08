@@ -12,15 +12,15 @@ import org.apache.hadoop.fs.*;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.*;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.*;
 
-import static com.manning.hip.ch3.proto.StockProtos.Stock;
+import static com.manning.hip.ch3.proto.StockProtos.*;
 
 public class StockProtocolBuffersMapReduce {
 
-  public static class ProtobufStockWritable   //<co id="ch03_comment_protobuf_mr1"/>
+  public static class ProtobufStockWritable
       extends ProtobufWritable<Stock> {
     public ProtobufStockWritable() {
       super(new TypeRef<Stock>() {
@@ -38,7 +38,7 @@ public class StockProtocolBuffersMapReduce {
     Path input = new Path(args[1]);
     Path output = new Path(args[2]);
 
-    if(!input.getName().endsWith(".lzo")) {
+    if (!input.getName().endsWith(".lzo")) {
       throw new Exception("HDFS stock file must have a .lzo suffix");
     }
 
@@ -55,17 +55,17 @@ public class StockProtocolBuffersMapReduce {
     job.setMapperClass(PBMapper.class);
     job.setReducerClass(PBReducer.class);
 
-    job.setMapOutputValueClass(ProtobufStockWritable.class);  //<co id="ch03_comment_protobuf_mr2"/>
+    job.setMapOutputKeyClass(Text.class);
+    job.setMapOutputValueClass(ProtobufStockWritable.class);
 
     job.setInputFormatClass(
-        LzoProtobufBlockInputFormat   //<co id="ch03_comment_protobuf_mr3"/>
+        LzoProtobufBlockInputFormat
             .getInputFormatClass(Stock.class,
                 job.getConfiguration()));
 
     job.setOutputFormatClass(
-        //<co id="ch03_comment_protobuf_mr4"/>
         LzoProtobufBlockOutputFormat.getOutputFormatClass(
-            Stock.class, job.getConfiguration()));
+            StockAvg.class, job.getConfiguration()));
 
     FileInputFormat.setInputPaths(job, input);
     FileOutputFormat.setOutputPath(job, output);
@@ -79,19 +79,16 @@ public class StockProtocolBuffersMapReduce {
     FileSystem hdfs = FileSystem.get(config);
     OutputStream os = hdfs.create(input);
 
-    LzopCodec codec = new LzopCodec();       //<co id="ch03_comment_protobuf_mr5"/>
+    LzopCodec codec = new LzopCodec();
     codec.setConf(config);
-    OutputStream lzopOutputStream =
-        codec.createOutputStream(os);   //<co id="ch03_comment_protobuf_mr6"/>
+    OutputStream lzopOutputStream = codec.createOutputStream(os);
 
     ProtobufBlockWriter<Stock> writer =
-        new    //<co id="ch03_comment_protobuf_mr7"/>
-            ProtobufBlockWriter<Stock>(
+        new ProtobufBlockWriter<Stock>(
             lzopOutputStream, Stock.class);
 
     for (String line : FileUtils.readLines(inputFile)) {
-      Stock stock =
-          createStock(line);  //<co id="ch03_comment_protobuf_mr8"/>
+      Stock stock = createStock(line);
       writer.write(stock);
     }
     writer.finish();
@@ -116,31 +113,41 @@ public class StockProtocolBuffersMapReduce {
 
 
   public static class PBMapper extends
-      Mapper<LongWritable,  //<co id="ch03_comment_protobuf_mr9"/>
-          ProtobufWritable<Stock>, LongWritable,
-          ProtobufWritable<Stock>> {
+      Mapper<LongWritable, ProtobufWritable<Stock>,
+          Text, ProtobufStockWritable> {
     @Override
     protected void map(LongWritable key,
                        ProtobufWritable<Stock> value,
                        Context context) throws IOException,
         InterruptedException {
-      context.write(key, new ProtobufStockWritable(value.get()));
+      context.write(
+          new Text(value.get().getSymbol()),
+          new ProtobufStockWritable(value.get()));
     }
   }
 
   public static class PBReducer extends
-      Reducer<LongWritable,  //<co id="ch03_comment_protobuf_mr10"/>
-          ProtobufStockWritable,
-          Stock,
-          ProtobufStockWritable> {
+      Reducer<Text, ProtobufStockWritable,
+          NullWritable, ProtobufWritable> {
+    private ProtobufWritable<StockAvg> stockAvg =
+        new ProtobufWritable<StockAvg>();
+
     @Override
-    protected void reduce(LongWritable key,
+    protected void reduce(Text symbol,
                           Iterable<ProtobufStockWritable> values,
                           Context context) throws IOException,
         InterruptedException {
-      for (ProtobufStockWritable stocks : values) {
-        context.write(stocks.get(), stocks);
+      double total = 0.0;
+      double count = 0;
+      for (ProtobufStockWritable d : values) {
+        total += d.get().getOpen();
+        count++;
       }
+      StockAvg avg = StockAvg.newBuilder()
+          .setSymbol(symbol.toString())
+          .setAvg(total / count).build();
+      stockAvg.set(avg);
+      context.write(NullWritable.get(), stockAvg);
     }
   }
 }
