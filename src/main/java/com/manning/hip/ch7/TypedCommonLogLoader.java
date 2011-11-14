@@ -115,6 +115,7 @@ public class TypedCommonLogLoader extends FileInputLoadFunc
     in = (CommonLogInputFormat.CommonLogRecordReader) reader;
   }
 
+  @Override
   public ResourceSchema getSchema(String location, Job job)
     throws IOException {
     return new ResourceSchema(new Schema(
@@ -133,16 +134,19 @@ public class TypedCommonLogLoader extends FileInputLoadFunc
       )));
   }
 
+  @Override
   public ResourceStatistics getStatistics(String location, Job job)
     throws IOException {
     return null;
   }
 
+  @Override
   public String[] getPartitionKeys(String location, Job job)
     throws IOException {
     return null;
   }
 
+  @Override
   public void setPartitionFilter(Expression partitionFilter)
     throws IOException {
   }
