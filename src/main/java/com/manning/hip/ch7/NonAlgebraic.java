@@ -7,9 +7,9 @@ import java.io.IOException;
 
 /**
  */
-public class BadFunc extends EvalFunc<String> {
+public class NonAlgebraic extends EvalFunc<String> {
 
   public String exec(Tuple input) throws IOException {
-    return "bob";
+    return null;
   }
 }
