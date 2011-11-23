@@ -26,7 +26,7 @@ fi
 JAVA_HEAP_MAX=-Xmx512m
 
 if [ ! -f "$HADOOP_BIN" ]; then
-  if [ -d "/usr/bin/hadoop" ]; then
+  if [ -f "/usr/bin/hadoop" ]; then
     HADOOP_BIN="/usr/bin/hadoop"
     echo "HADOOP_BIN environment not set, but found script under $HADOOP_BIN"
   else
