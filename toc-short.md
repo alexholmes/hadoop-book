@@ -2,6 +2,7 @@ Table of Contents for "Hadoop in Practice", Manning Publishing
 ==============================================================
 
 Preface
+
 Chapter 1:  Getting Started
 Chapter 2:  Working with Files in HDFS
 
