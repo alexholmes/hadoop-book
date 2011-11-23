@@ -1,4 +1,5 @@
-== Table of Contents for "Hadoop in Practice", Manning Publishing ==
+Table of Contents for "Hadoop in Practice", Manning Publishing
+==============================================================
 
 Preface
 Chapter 1:  Getting Started
