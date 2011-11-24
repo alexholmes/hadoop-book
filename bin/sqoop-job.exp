@@ -35,7 +35,4 @@ expect "*?assword:*"
 # send password aka $password
 send -- "$password\r"
 
-# send blank line (\r) to make sure we get back to gui
-#send -- "\r"
-
 expect eof
