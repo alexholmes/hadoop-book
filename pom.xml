@@ -1,6 +1,5 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.manning.hip</groupId>
@@ -36,8 +35,23 @@
 
   <repositories>
     <repository>
+      <id>hadoop-non-releases</id>
+      <name>Hadoop non-releases</name>
+      <url>
+        http://alexholmes.github.com/hadoop-book-mvn-repo/repository/releases/
+      </url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>cloudera-releases</id>
-      <url>https://repository.cloudera.com/content/repositories/releases/</url>
+      <url>
+        https://repository.cloudera.com/content/repositories/releases/
+      </url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -47,18 +61,9 @@
     </repository>
     <repository>
       <id>cloudera-third-party</id>
-      <url>https://repository.cloudera.com/content/repositories/third-party/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>hadoop-non-releases</id>
-      <name>Hadoop non-releases</name>
-      <url>https://github.com/alexholmes/hadoop-book-mvn-repo/tree/master/releases/</url>
+      <url>
+        https://repository.cloudera.com/content/repositories/third-party/
+      </url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -75,6 +80,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.apache.thrift</groupId>
+      <artifactId>hadoopbook-libthrift</artifactId>
+      <version>0.5.0</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.9</version>
@@ -84,11 +94,16 @@
       <groupId>org.apache.avro</groupId>
       <artifactId>avro-mapred</artifactId>
       <version>1.5.4</version>
-    </dependency>                      
+    </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-core</artifactId>
       <version>0.20.2-cdh3u2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase</artifactId>
+      <version>0.90.4-cdh3u2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.pig</groupId>
@@ -115,11 +130,6 @@
       <artifactId>commons-io</artifactId>
       <version>2.0.1</version>
     </dependency>
-    <dependency>
-    <groupId>org.apache.thrift</groupId>
-    <artifactId>libthrift</artifactId>
-    <version>0.5.0</version>
-</dependency>
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
