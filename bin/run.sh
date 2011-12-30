@@ -19,8 +19,7 @@
 #
 # Pre-requisites:
 # 1)  JAVA_HOME is set
-# 2)  MAVEN_HOME is set and points to the local Maven installation
-# 3)  HADOOP_HOME is set, and $HADOOP_HOME/conf contains your cluster
+# 2)  HADOOP_HOME is set, and $HADOOP_HOME/conf contains your cluster
 #     configuration
 #
 # If running on a CDH host with standard CDH directory locations in place,
@@ -67,40 +66,24 @@ fi
 
 HADOOP_CONF_DIR=${HADOOP_HOME}/conf
 
-# set up Maven environment
-MVN="mvn"
-if [ -n "$M2_HOME" ]; then
-  MVN=${M2_HOME}/bin/mvn
+if [ ! -d "$HADOOP_CONF_DIR" ]; then
+  echo "$HADOOP_CONF_DIR must be the Hadoop config directory"
+  exit 3;
 fi
 
-if [ ! -d "$HADOOP_CONF_DIR" ]; then
-  if [ -d "/etc/hadoop/conf" ]; then
-    HADOOP_CONF_DIR="/etc/hadoop/conf"
-    echo "HADOOP_CONF_DIR environment not set, but found directory $HADOOP_CONF_DIR"
-  else
-    echo "HADOOP_CONF_DIR must be defined and refer to your Hadoop config directory"
-    exit 4;
-  fi
-fi
 
 # classpath initially contains $HADOOP_CONF_DIR
 CLASSPATH="${HADOOP_CONF_DIR}"
 
-# add our JAR
-CLASSPATH="${CLASSPATH}":${BASEDIR}/target/hadoop-book-1.0.jar
+HIP_CODE_JAR=${BASEDIR}/target/hadoop-book-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 
-
-# create and cache Maven classpath
-cpfile="${BASEDIR}/target/cached_classpath.txt"
-pomfile="${BASEDIR}/pom.xml"
-if [ ! -f "${cpfile}" ]; then
-  echo "Generating classpath cache in $cpfile, this may take a few mins"
-  echo "Run bin/clean_classpath_cache.sh to remove this file if you need to re-generate the classpath"
-  ${MVN} -f "${pomfile}" dependency:build-classpath -Dmdep.outputFile="${cpfile}" &> /dev/null
-else
-  echo "Using cached Maven classes in $cpfile, remove this file if you want them re-generated"
+if [ ! -f "$HIP_CODE_JAR" ]; then
+  echo "$HIP_CODE_JAR doesn't exist.  Run 'mvn package' to create this file."
+  exit 4;
 fi
-MVN_CLASSPATH=`cat "${cpfile}"`
+
+# add our JAR
+CLASSPATH="${CLASSPATH}":${HIP_CODE_JAR}
 
 function add_to_hadoop_classpath() {
   dir=$1
@@ -116,10 +99,15 @@ add_to_hadoop_classpath ${HADOOP_LIB_DIR}
 HADOOP_LIB_DIR=$HADOOP_HOME/lib
 add_to_hadoop_classpath ${HADOOP_LIB_DIR}
 
-export CLASSPATH=${CLASSPATH}:${MVN_CLASSPATH}:${HADOOP_CLASSPATH}
+export CLASSPATH=${CLASSPATH}:${HADOOP_CLASSPATH}
 
 JAVA=$JAVA_HOME/bin/java
 JAVA_HEAP_MAX=-Xmx512m
+
+if [ ! -f "$JAVA" ]; then
+  echo "JAVA_HOME is not set or doesn't point to a valid directory."
+  exit 5;
+fi
 
 # pick up the native Hadoop directory if it exists
 # this is to support native compression codecs
@@ -144,6 +132,6 @@ if [ -d "${HADOOP_HOME}/build/native" -o -d "${HADOOP_HOME}/lib/native" -o -d "$
   fi
 fi
 
-# echo $CLASSPATH
+echo $CLASSPATH
 
-"$JAVA" $JAVA_HEAP_MAX -Djava.library.path=${JAVA_LIBRARY_PATH} -DMVN_CLASSPATH=$MVN_CLASSPATH -classpath "$CLASSPATH" "$@"
+"$JAVA" $JAVA_HEAP_MAX -Djava.library.path=${JAVA_LIBRARY_PATH} -classpath "$CLASSPATH" "$@"
