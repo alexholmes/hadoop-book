@@ -4,7 +4,7 @@
 
   <groupId>com.manning.hip</groupId>
   <artifactId>hadoop-book</artifactId>
-  <version>1.0</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Hadoop in Practice Book</name>
@@ -13,9 +13,33 @@
   <properties>
     <jdkLevel>1.6</jdkLevel>
     <requiredMavenVersion>[2.1,)</requiredMavenVersion>
+    <main.basedir>${project.basedir}</main.basedir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+
+    <maven.assembly.version>2.2.1</maven.assembly.version>
+    <maven.compiler>2.0.2</maven.compiler>
+    <maven.jar.plugin.version>2.2</maven.jar.plugin.version>
+    <maven.javadoc.version>2.8</maven.javadoc.version>
+    <maven.jxr.plugin.version>2.3</maven.jxr.plugin.version>
+    <maven.reports.version>2.2</maven.reports.version>
+    <maven.site.version>3.0-beta-3</maven.site.version>
+
   </properties>
+
+  <description>
+    The source code for the book "Hadoop in Practice" from Manning
+    Publishing.
+  </description>
+
+  <developers>
+    <developer>
+      <id>alholmes</id>
+      <name>Alex Holmes</name>
+      <email>grep.alex@gmail.com</email>
+      <url>https://twitter.com/grep_alex</url>
+    </developer>
+  </developers>
 
   <build>
     <plugins>
@@ -28,7 +52,122 @@
           <target>${jdkLevel}</target>
           <showDeprecation>true</showDeprecation>
           <showWarnings>true</showWarnings>
+
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven.site.version}</version>
+        <configuration>
+          <reportPlugins>
+
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin
+              </artifactId>
+              <version>${maven.reports.version}</version>
+              <configuration>
+                <dependencyLocationsEnabled>false
+                </dependencyLocationsEnabled>
+              </configuration>
+              <reportSets>
+                <reportSet>
+                  <reports>
+                    <report>index</report>
+                    <report>project-team</report>
+                    <report>summary</report>
+                  </reports>
+                </reportSet>
+              </reportSets>
+            </plugin>
+
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jxr-plugin</artifactId>
+              <version>${maven.jxr.plugin.version}</version>
+              <configuration>
+                <aggregate>true</aggregate>
+              </configuration>
+            </plugin>
+
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>cobertura-maven-plugin</artifactId>
+              <version>${cobertura.version}</version>
+              <configuration>
+                <formats>
+                  <format>html</format>
+                  <format>xml</format>
+                </formats>
+              </configuration>
+            </plugin>
+
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>${maven.javadoc.version}</version>
+              <configuration>
+                <aggregate>true</aggregate>
+              </configuration>
+            </plugin>
+
+          </reportPlugins>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib
+              </outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven.jar.plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+              <mainClass>com.alexholmes.hdfsslurper.Slurper</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -80,9 +219,16 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-mapred</artifactId>
+      <version>1.5.4</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.thrift</groupId>
       <artifactId>hadoopbook-libthrift</artifactId>
       <version>0.5.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -91,39 +237,40 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.avro</groupId>
-      <artifactId>avro-mapred</artifactId>
-      <version>1.5.4</version>
-    </dependency>
-    <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-core</artifactId>
       <version>0.20.2-cdh3u2</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hbase</groupId>
       <artifactId>hbase</artifactId>
       <version>0.90.4-cdh3u2</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.pig</groupId>
       <artifactId>pig</artifactId>
       <version>0.9.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop.hive</groupId>
       <artifactId>hive-serde</artifactId>
       <version>0.7.1-cdh3u2</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>
       <artifactId>json-simple</artifactId>
       <version>1.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>r09</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -134,26 +281,37 @@
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
       <version>2.3.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.hadoop.compression.lzo</groupId>
       <artifactId>hadoop-lzo</artifactId>
       <version>0.4.14</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>edu.uci.ics.crawler4j</groupId>
       <artifactId>crawler4j</artifactId>
       <version>2.6.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.twitter.elephantbird</groupId>
       <artifactId>elephant-bird</artifactId>
       <version>2.0.5</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.maxmind.geoip</groupId>
       <artifactId>maxmind-geoip</artifactId>
       <version>1.2.5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop.contrib.utils</groupId>
+      <artifactId>join</artifactId>
+      <version>0.20.2</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
