@@ -1,17 +1,13 @@
 package com.manning.hip.ch3;
 
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.hadoop.io.WritableComparable;
-import org.apache.hadoop.io.WritableUtils;
+import com.manning.hip.ch3.csv.CSVParser;
+import org.apache.commons.lang.builder.*;
+import org.apache.hadoop.io.*;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import java.io.*;
 
 public class StockPriceWritable
-    implements WritableComparable<StockPriceWritable>, Cloneable  {
+    implements WritableComparable<StockPriceWritable>, Cloneable {
   String symbol;
   String date;
   double open;
@@ -52,7 +48,7 @@ public class StockPriceWritable
     out.writeDouble(close);
     out.writeInt(volume);
     out.writeDouble(adjClose);
- }
+  }
 
   @Override
   public void readFields(DataInput in) throws IOException {
@@ -73,7 +69,8 @@ public class StockPriceWritable
 
   @Override
   public String toString() {
-    return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    return ToStringBuilder
+        .reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
   }
 
   public String getSymbol() {
@@ -138,5 +135,22 @@ public class StockPriceWritable
 
   public void setAdjClose(double adjClose) {
     this.adjClose = adjClose;
+  }
+
+  public static StockPriceWritable fromLine(String line)
+      throws IOException {
+    CSVParser parser = new CSVParser();
+    String[] parts = parser.parseLine(line);
+
+    StockPriceWritable stock = new StockPriceWritable(
+        //<co id="ch03_comment_seqfile_write3"/>
+        parts[0], parts[1], Double.valueOf(parts[2]),
+        Double.valueOf(parts[3]),
+        Double.valueOf(parts[4]),
+        Double.valueOf(parts[5]),
+        Integer.valueOf(parts[6]),
+        Double.valueOf(parts[7])
+    );
+    return stock;
   }
 }
