@@ -53,8 +53,6 @@ fi
 BASEDIR=`dirname ${PRG}`
 BASEDIR=`cd ${BASEDIR}/..;pwd`
 
-echo $BASEDIR
-
 CDH_HADOOP_HOME=/usr/lib/hadoop
 
 if [ ! -d "${HADOOP_HOME}" ]; then
