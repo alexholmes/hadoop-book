@@ -26,7 +26,7 @@
 # then you won't need to set HADOOP_HOME.
 #
 # Use "bash -x bin/run.sh ..." to have bash echo-out all the steps in this
-# script.
+# script for debugging purposes.
 #
 ##########################################################################
 

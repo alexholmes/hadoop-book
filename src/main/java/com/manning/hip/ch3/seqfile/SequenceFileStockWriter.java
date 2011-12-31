@@ -24,8 +24,6 @@ public class SequenceFileStockWriter {
     Configuration conf = new Configuration();
     FileSystem fs = FileSystem.get(conf);
 
-    CSVParser parser = new CSVParser();
-
     SequenceFile.Writer writer =    //<co id="ch03_comment_seqfile_write1"/>
         SequenceFile.createWriter(fs, conf, outputPath, Text.class,
             StockPriceWritable.class,
@@ -35,18 +33,10 @@ public class SequenceFileStockWriter {
       Text key = new Text();
 
       for (String line : FileUtils.readLines(inputFile)) {   //<co id="ch03_comment_seqfile_write2"/>
-        String[] parts = parser.parseLine(line);
+        StockPriceWritable stock = StockPriceWritable.fromLine(line);
+        key.set(stock.getSymbol());
 
-        StockPriceWritable stock = new StockPriceWritable(   //<co id="ch03_comment_seqfile_write3"/>
-            parts[0], parts[1], Double.valueOf(parts[2]),
-            Double.valueOf(parts[3]),
-            Double.valueOf(parts[4]),
-            Double.valueOf(parts[5]),
-            Integer.valueOf(parts[6]),
-            Double.valueOf(parts[7])
-        );
-
-        key.set(parts[0]);
+        key.set(stock.getSymbol());
         writer.append(key,
             stock);        //<co id="ch03_comment_seqfile_write4"/>
       }
