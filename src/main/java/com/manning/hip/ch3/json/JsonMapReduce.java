@@ -11,9 +11,9 @@ import org.slf4j.*;
 
 import java.io.IOException;
 
-public final class HadoopPropertiesMapReduce {
+public final class JsonMapReduce {
   private static final Logger log = LoggerFactory.getLogger
-      (HadoopPropertiesMapReduce.class);
+      (JsonMapReduce.class);
 
   public static class Map extends Mapper<LongWritable, MapWritable,
       Text, Text> {
@@ -26,8 +26,7 @@ public final class HadoopPropertiesMapReduce {
 
       for (java.util.Map.Entry<Writable, Writable> entry : value
           .entrySet()) {
-        System.out.println(
-            "\"" + entry.getKey() + "\":\"" + entry.getValue() + "\"");
+        context.write((Text) entry.getKey(), (Text) entry.getValue());
       }
     }
   }
@@ -40,12 +39,8 @@ public final class HadoopPropertiesMapReduce {
                             String output)
       throws Exception {
     Configuration conf = new Configuration();
-    conf.set("key.value.separator.in.input.line", " ");
-    conf.set("xmlinput.start", "<property>");
-    conf.set("xmlinput.end", "</property>");
-
     Job job = new Job(conf);
-    job.setJarByClass(HadoopPropertiesMapReduce.class);
+    job.setJarByClass(JsonMapReduce.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(Text.class);
     job.setMapperClass(Map.class);
