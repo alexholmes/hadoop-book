@@ -51,8 +51,8 @@ public final class CSVMapReduce {
                             String output)
       throws Exception {
     Configuration conf = new Configuration();
-    conf.set(CSVInputFormat.CSV_TOKEN_SEPARATOR_CONFIG, "\t");  //<co id="ch03_comment_csv_mr3"/>
-    conf.set(CSVOutputFormat.CSV_TOKEN_SEPARATOR_CONFIG, ","); //<co id="ch03_comment_csv_mr4"/>
+    conf.set(CSVInputFormat.CSV_TOKEN_SEPARATOR_CONFIG, ",");  //<co id="ch03_comment_csv_mr3"/>
+    conf.set(CSVOutputFormat.CSV_TOKEN_SEPARATOR_CONFIG, ":"); //<co id="ch03_comment_csv_mr4"/>
 
     Job job = new Job(conf);
     job.setJarByClass(CSVMapReduce.class);

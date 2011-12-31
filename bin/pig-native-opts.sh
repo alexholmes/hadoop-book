@@ -15,11 +15,11 @@
 #
 ##########################################################################
 #
-# run.sh:  Launch a code example from the book "Hadoop in Practice"
+# pig-env.sh:  Export PIG_OPTS to include the java.library.path with the
+#              native Hadoop directory, if it exists.
 #
 # Pre-requisites:
-# 1)  JAVA_HOME is set
-# 2)  HADOOP_HOME is set, and $HADOOP_HOME/conf contains your cluster
+#     HADOOP_HOME is set, and $HADOOP_HOME/conf contains your cluster
 #     configuration
 #
 # If running on a CDH host with standard CDH directory locations in place,
@@ -42,13 +42,6 @@ while [ -h "${PRG}" ]; do
     PRG=`dirname "${PRG}"`/"$link"
   fi
 done
-
-# check command line args
-if [[ $# == 0 ]]; then
-  echo "usage: $(basename $0) <example-name>"
-  exit 1;
-fi
-
 
 BASEDIR=`dirname ${PRG}`
 BASEDIR=`cd ${BASEDIR}/..;pwd`
@@ -102,6 +95,7 @@ add_to_hadoop_classpath ${HADOOP_LIB_DIR}
 
 export CLASSPATH=${CLASSPATH}:${HADOOP_CLASSPATH}
 
+
 JAVA=$JAVA_HOME/bin/java
 JAVA_HEAP_MAX=-Xmx512m
 
@@ -133,7 +127,7 @@ if [ -d "${HADOOP_HOME}/build/native" -o -d "${HADOOP_HOME}/lib/native" -o -d "$
   fi
 fi
 
-# echo $CLASSPATH
-# echo ${JAVA_LIBRARY_PATH}
+echo "Run the following command to setup Pig to use native Java libs"
+export PIG_OPTS="\"\$PIG_OPTS -Djava.library.path=${JAVA_LIBRARY_PATH}\""
 
-"$JAVA" $JAVA_HEAP_MAX -Djava.library.path=${JAVA_LIBRARY_PATH} -classpath "$CLASSPATH" "$@"
+echo "export PIG_OPTS="${PIG_OPTS}

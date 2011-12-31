@@ -11,8 +11,6 @@ import org.apache.hadoop.io.IOUtils;
 
 import java.io.*;
 
-import com.manning.hip.ch3.thrift.StockAvg;
-
 public class ThriftStockAvgFileReader {
 
   public static void readFromProtoBuf(InputStream inputStream)

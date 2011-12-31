@@ -105,11 +105,11 @@ public class StockProtocolBuffersMapReduce {
         .setSymbol(parts[0])
         .setDate(parts[1])
         .setOpen(Double.valueOf(parts[2]))
-        .setHigh(Double.valueOf(parts[2]))
-        .setLow(Double.valueOf(parts[2]))
-        .setClose(Double.valueOf(parts[2]))
+        .setHigh(Double.valueOf(parts[3]))
+        .setLow(Double.valueOf(parts[4]))
+        .setClose(Double.valueOf(parts[5]))
         .setVolume(Integer.valueOf(parts[6]))
-        .setAdjClose(Double.valueOf(parts[2])).build();
+        .setAdjClose(Double.valueOf(parts[7])).build();
   }
 
 
