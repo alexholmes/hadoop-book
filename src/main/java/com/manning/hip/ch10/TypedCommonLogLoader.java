@@ -11,18 +11,23 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package com.manning.hip.ch7;
+package com.manning.hip.ch10;
 
-import org.apache.hadoop.mapreduce.*;
-import org.apache.hadoop.mapreduce.lib.input.*;
+import org.apache.hadoop.mapreduce.InputFormat;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.RecordReader;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.pig.*;
 import org.apache.pig.backend.executionengine.ExecException;
 import org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigSplit;
-import org.apache.pig.data.*;
+import org.apache.pig.data.DataType;
+import org.apache.pig.data.Tuple;
+import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.logicalLayer.schema.Schema;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * TypedCommonLogLoader is used to load logs based on Apache's
@@ -44,90 +49,105 @@ import java.util.*;
  * method: chararray,resource: chararray,protocol: chararray,epoch: long}
  */
 
-public class ComplexTupleLoader extends FileInputLoadFunc
-    implements LoadMetadata {
+public class TypedCommonLogLoader extends FileInputLoadFunc
+  implements LoadMetadata, TypedCommonLogLoaderConstants {
 
- protected RecordReader reader = null;
+  protected CommonLogInputFormat.CommonLogRecordReader in = null;
+
+  private ArrayList<Object> tuple = null;
   private TupleFactory tupleFactory = TupleFactory.getInstance();
-  private BagFactory bagFactory = BagFactory.getInstance();
 
   @Override
   public Tuple getNext() throws IOException {
+
+    tuple = new ArrayList<Object>(11);
+
+    for (int i = 0; i < 11; i++) {
+      tuple.add(null);
+    }
+
     try {
-      if(!reader.nextKeyValue()) {
+      if (!in.nextKeyValue()) {
         return null;
       }
+      setTuple(in.getCurrentValue());
+
+      return tupleFactory.newTupleNoCopy(tuple);
     } catch (InterruptedException e) {
       int errCode = 6018;
       String errMsg = "Error while reading input";
       throw new ExecException(errMsg, errCode,
         PigException.REMOTE_ENVIRONMENT, e);
-    }    ArrayList<Object> tuple = new ArrayList<Object>();
-    tuple.add("127.0.0.1");
+    }
 
-    Map<String, Object> header = new HashMap<String, Object>();
-    header.put("User-Agent", "Mozilla");
-    tuple.add(header);
-
-    ArrayList<Tuple> bodyTuples = new ArrayList<Tuple>();
-    bodyTuples.add(newBodyTuple("keyword1"));
-    bodyTuples.add(newBodyTuple("keyword2"));
-    tuple.add(bagFactory.newDefaultBag(bodyTuples));
-
-    return tupleFactory.newTuple(tuple);
   }
 
-  public Tuple newBodyTuple(String line) {
-    return tupleFactory.newTuple(Arrays.asList(line));
+  private void setTuple(CommonLogEntry entry) throws IOException {
+    tuple.set(0, entry.getRemoteAddress());
+    tuple.set(1, entry.getRemoteLogname());
+    tuple.set(2, entry.getUserId());
+    tuple.set(3, entry.getTime());
+    tuple.set(4, entry.getRequestLine());
+    tuple.set(5, entry.getStatusCode());
+    tuple.set(6, entry.getObjSize());
+    tuple.set(7, entry.getMethod());
+    tuple.set(8, entry.getResource());
+    tuple.set(9, entry.getProtocol());
+    tuple.set(10, entry.getEpoch());
   }
 
   @Override
   public void setLocation(String location, Job job)
-      throws IOException {
+    throws IOException {
     FileInputFormat.setInputPaths(job, location);
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   public InputFormat getInputFormat() throws IOException {
-    return new TextInputFormat();
+    return new CommonLogInputFormat();
   }
 
   @Override
   public void prepareToRead(
-      @SuppressWarnings("rawtypes") RecordReader reader,
-      PigSplit split)
-      throws IOException {
-    this.reader = reader;
+    @SuppressWarnings("rawtypes") RecordReader reader, PigSplit split)
+    throws IOException {
+    in = (CommonLogInputFormat.CommonLogRecordReader) reader;
   }
 
+  @Override
   public ResourceSchema getSchema(String location, Job job)
-      throws IOException {
-
-    Schema schema = new Schema();
-
-    Schema headerSchema = new Schema(
-        Arrays.asList(
-            new Schema.FieldSchema("word", DataType.CHARARRAY)
-        ));
-
-    schema.add(new Schema.FieldSchema("ip", DataType.CHARARRAY));
-    schema.add(new Schema.FieldSchema("header", DataType.MAP));
-    schema.add(new Schema.FieldSchema("keywords", headerSchema));
-    return new ResourceSchema(schema);
+    throws IOException {
+    return new ResourceSchema(new Schema(
+      Arrays.asList(
+        new Schema.FieldSchema(REMOTE_ADDR, DataType.CHARARRAY),
+        new Schema.FieldSchema(REMOTE_LOGNAME, DataType.CHARARRAY),
+        new Schema.FieldSchema(USERID, DataType.CHARARRAY),
+        new Schema.FieldSchema(TIME, DataType.CHARARRAY),
+        new Schema.FieldSchema(REQUEST_LINE, DataType.CHARARRAY),
+        new Schema.FieldSchema(STATUS_CODE, DataType.LONG),
+        new Schema.FieldSchema(OBJ_SIZE, DataType.LONG),
+        new Schema.FieldSchema(METHOD, DataType.CHARARRAY),
+        new Schema.FieldSchema(RESOURCE, DataType.CHARARRAY),
+        new Schema.FieldSchema(PROTOCOL, DataType.CHARARRAY),
+        new Schema.FieldSchema(EPOCH, DataType.LONG)
+      )));
   }
 
+  @Override
   public ResourceStatistics getStatistics(String location, Job job)
-      throws IOException {
+    throws IOException {
     return null;
   }
 
+  @Override
   public String[] getPartitionKeys(String location, Job job)
-      throws IOException {
+    throws IOException {
     return null;
   }
 
+  @Override
   public void setPartitionFilter(Expression partitionFilter)
-      throws IOException {
+    throws IOException {
   }
 }

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.manning.hip.ch7;
+package com.manning.hip.ch10;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

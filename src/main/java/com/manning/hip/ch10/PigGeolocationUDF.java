@@ -1,4 +1,4 @@
-package com.manning.hip.ch7;
+package com.manning.hip.ch10;
 
 import com.maxmind.geoip.LookupService;
 import org.apache.pig.EvalFunc;

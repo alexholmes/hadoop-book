@@ -1,4 +1,4 @@
-package com.manning.hip.ch7;
+package com.manning.hip.ch10;
 
 public interface TypedCommonLogLoaderConstants {
   public static final String REMOTE_ADDR = "remoteAddr";

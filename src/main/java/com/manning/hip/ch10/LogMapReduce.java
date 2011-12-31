@@ -1,4 +1,4 @@
-package com.manning.hip.ch7;
+package com.manning.hip.ch10;
 
 
 import org.apache.commons.lang.StringUtils;
@@ -55,7 +55,7 @@ public final class LogMapReduce {
     Configuration conf = new Configuration();
 
     Job job = new Job(conf);
-    job.setJarByClass(com.manning.hip.ch2.PasswdMapReduce.class);
+    job.setJarByClass(LogMapReduce.class);
     job.setMapperClass(Map.class);
     job.setReducerClass(Reduce.class);
     job.setInputFormatClass(KeyValueTextInputFormat.class);

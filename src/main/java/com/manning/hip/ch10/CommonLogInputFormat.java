@@ -1,4 +1,4 @@
-package com.manning.hip.ch7;
+package com.manning.hip.ch10;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.fs.Path;

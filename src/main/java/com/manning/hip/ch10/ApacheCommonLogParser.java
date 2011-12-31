@@ -1,4 +1,4 @@
-package com.manning.hip.ch7;
+package com.manning.hip.ch10;
 
 /**
  Copyright 2005 Bytecode Pty Ltd.
