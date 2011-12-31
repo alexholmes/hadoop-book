@@ -25,6 +25,9 @@
 # If running on a CDH host with standard CDH directory locations in place,
 # then you won't need to set HADOOP_HOME.
 #
+# Use "bash -x bin/run.sh ..." to have bash echo-out all the steps in this
+# script.
+#
 ##########################################################################
 
 # resolve links - $0 may be a softlink
@@ -132,6 +135,6 @@ if [ -d "${HADOOP_HOME}/build/native" -o -d "${HADOOP_HOME}/lib/native" -o -d "$
   fi
 fi
 
-echo $CLASSPATH
+# echo $CLASSPATH
 
 "$JAVA" $JAVA_HEAP_MAX -Djava.library.path=${JAVA_LIBRARY_PATH} -classpath "$CLASSPATH" "$@"
