@@ -24,14 +24,14 @@ public class AvroStockFileWrite {
     String parts[] = parser.parseLine(line);
     Stock stock = new Stock();
 
-    stock.symbol = parts[0];
-    stock.date = parts[1];
-    stock.open = Double.valueOf(parts[2]);
-    stock.high = Double.valueOf(parts[3]);
-    stock.low = Double.valueOf(parts[4]);
-    stock.close = Double.valueOf(parts[5]);
-    stock.volume = Integer.valueOf(parts[6]);
-    stock.adjClose = Double.valueOf(parts[7]);
+    stock.setSymbol(parts[0]);
+    stock.setDate(parts[1]);
+    stock.setOpen(Double.valueOf(parts[2]));
+    stock.setHigh(Double.valueOf(parts[3]));
+    stock.setLow(Double.valueOf(parts[4]));
+    stock.setClose(Double.valueOf(parts[5]));
+    stock.setVolume(Integer.valueOf(parts[6]));
+    stock.setAdjClose(Double.valueOf(parts[7]));
 
     return stock;
   }

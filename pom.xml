@@ -25,6 +25,8 @@
     <maven.reports.version>2.2</maven.reports.version>
     <maven.site.version>3.0-beta-3</maven.site.version>
 
+    <jackson-version>1.8.6</jackson-version>
+
   </properties>
 
   <description>
@@ -219,9 +221,21 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>${jackson-version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>1.6.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro-mapred</artifactId>
-      <version>1.5.4</version>
+      <version>1.6.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

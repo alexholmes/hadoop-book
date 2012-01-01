@@ -46,7 +46,7 @@ public class AvroTextMapReduceNoMR {
     Path input = new Path(args[0]);
     Path output = new Path(args[1]);
 
-    output.getFileSystem(job).delete(output);
+    output.getFileSystem(job).delete(output, true);
 
     FileSystem hdfs = FileSystem.get(job);
     OutputStream os = hdfs.create(input);

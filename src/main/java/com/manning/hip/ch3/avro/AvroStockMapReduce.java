@@ -57,8 +57,8 @@ public class AvroStockMapReduce {
                     NullWritable value,
                     OutputCollector<Text, DoubleWritable> output,
                     Reporter reporter) throws IOException {
-      output.collect(new Text(key.datum().symbol.toString()),
-          new DoubleWritable(key.datum().open));
+      output.collect(new Text(key.datum().getSymbol().toString()),
+          new DoubleWritable(key.datum().getOpen()));
     }
 
     public void close() throws IOException {
@@ -84,8 +84,8 @@ public class AvroStockMapReduce {
         count++;
       }
       StockAvg avg = new StockAvg();
-      avg.symbol = key.toString();
-      avg.avg = total / count;
+      avg.setSymbol(key.toString());
+      avg.setAvg(total / count);
       output.collect(new AvroWrapper<StockAvg>(avg),
           NullWritable.get());
     }
