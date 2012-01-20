@@ -26,18 +26,6 @@ public class LzopMapReduce {
 
     hdfs.delete(outputFile, true);
 
-    conf.setBoolean("keep.failed.task.files", true);
-    // ./var/lib/hadoop-0.20/cache/mapred/mapred/local/ttpri
-    // vate/taskTracker/aholmes/jobcache/job_201109101731_0007/
-    // attempt_201109101731_0007_m_000000_2/taskjvm.sh
-
-//    conf.setBoolean("mapred.output.compress", true);
-//    conf.setClass("mapred.output.compression.codec", LzopCodec.class,
-//        CompressionCodec.class);
-
-    // conf.setCompressMapOutput(true);
-    //conf.setMapOutputCompressorClass(LzopCodec.class);
-
     conf.setBoolean("mapred.compress.map.output", true);
     conf.setClass("mapred.map.output.compression.codec",
         LzopCodec.class,
