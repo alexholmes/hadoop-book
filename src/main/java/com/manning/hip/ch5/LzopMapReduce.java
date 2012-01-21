@@ -41,6 +41,10 @@ public class LzopMapReduce {
     job.setInputFormatClass(LzoTextInputFormat.class);
     job.setOutputFormatClass(TextOutputFormat.class);
 
+    job.getConfiguration().setBoolean("mapred.output.compress", true);
+    job.getConfiguration().setClass("mapred.output.compression.codec",
+          LzopCodec.class, CompressionCodec.class);
+
     FileInputFormat.addInputPath(job, compressedInputFile);
     FileOutputFormat.setOutputPath(job, outputFile);
 
@@ -68,7 +72,7 @@ public class LzopMapReduce {
       System.out.println("block[" + i + "] = " + index.getPosition(i));
     }
 
-    Job job = new Job(tmpConfig);
+    Job job = new Job(conf);
     job.setInputFormatClass(LzoTextInputFormat.class);
     LzoTextInputFormat inputFormat = new LzoTextInputFormat();
     TextInputFormat.setInputPaths(job, compressedFile);
@@ -76,7 +80,6 @@ public class LzopMapReduce {
     List<InputSplit> is = inputFormat.getSplits(job);
 
     System.out.println("input splits = " + is.size());
-
 
     return compressedFile;
   }
