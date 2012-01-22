@@ -43,8 +43,8 @@ mvn package
 ####  Run an example
 
 <pre><code># copy the input files into HDFS
-hadoop -mkdir /tmp
-hadoop -put test-data/ch1/* /tmp/
+hadoop fs -mkdir /tmp
+hadoop fs -put test-data/ch1/* /tmp/
 
 # run the map-reduce job
 bin/run.sh com.manning.hip.ch1.InvertedIndexMapReduce /tmp/file1.txt /tmp/file2.txt output
