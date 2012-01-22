@@ -6,22 +6,18 @@ Source code for book "Hadoop in Practice", Manning Publishing
 
 ####  Download from github
 
-<pre><code>
-git clone git://github.com/alexholmes/hadoop-book.git
+<pre><code>git clone git://github.com/alexholmes/hadoop-book.git
 </code></pre>
 
 ####  Build
 
-<pre><code>
-cd hadoop-book
+<pre><code>cd hadoop-book
 mvn package
 </code></pre>
 
 ####  Run an example
 
-<pre><code>
-
-# copy the input files into HDFS
+<pre><code># copy the input files into HDFS
 hadoop -mkdir /tmp
 hadoop -put test-data/ch1/* /tmp/
 
