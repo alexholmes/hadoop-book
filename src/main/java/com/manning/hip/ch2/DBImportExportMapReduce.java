@@ -1,7 +1,7 @@
 package com.manning.hip.ch2;
 
 
-import com.manning.hip.util.JobHelper;
+import com.manning.hip.common.JobHelper;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
