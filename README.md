@@ -40,6 +40,17 @@ when we get nearer to production.
 mvn package
 </code></pre>
 
+#### Runtime Dependencies
+
+Many of the examples use Snappy and LZOP compression.  Therefore
+you may get runtime errors if you don't have them installed and configured
+in your cluster.
+
+Snappy can be installed on CDH by following the instructions at
+ https://ccp.cloudera.com/display/CDHDOC/Snappy+Installation.
+
+To install LZOP follow the instructions at https://github.com/kevinweil/hadoop-lzo.
+
 ####  Run an example
 
 <pre><code># copy the input files into HDFS
