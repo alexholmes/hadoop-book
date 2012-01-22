@@ -47,8 +47,7 @@ hadoop -mkdir /tmp
 hadoop -put test-data/ch1/* /tmp/
 
 # run the map-reduce job
-bin/run.sh com.manning.hip.ch1.InvertedIndexMapReduce \
-/tmp/file1.txt /tmp/file2.txt output
+bin/run.sh com.manning.hip.ch1.InvertedIndexMapReduce /tmp/file1.txt /tmp/file2.txt output
 </code></pre>
 
 ####  Run an example on a non-CDH distro
