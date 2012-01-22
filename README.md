@@ -47,7 +47,16 @@ hadoop -mkdir /tmp
 hadoop -put test-data/ch1/* /tmp/
 
 # run the map-reduce job
-bin/jar.sh com.manning.hip.ch1.InvertedIndexMapReduce \
+bin/run.sh com.manning.hip.ch1.InvertedIndexMapReduce \
 /tmp/file1.txt /tmp/file2.txt output
 </code></pre>
 
+####  Run an example on a non-CDH distro
+
+The same as above, but set the `HADOOP_HOME` environment before running
+`run.sh`.
+
+<pre><code>
+# replace the path below with the location of your Hadoop installation
+export HADOOP_HOME=/usr/local/hadoop
+</code></pre>
