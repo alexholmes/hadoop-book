@@ -1,8 +1,8 @@
 #!/usr/bin/gnuplot
 reset
-set terminal png size 1024,786 linewidth 1 rounded
+set terminal png truecolor size 1024,786 linewidth 1 rounded
 
-set output 'mr.png'
+set output 'tasksovertime.png'
 
 set offset graph 0, graph 0, graph 0.5, graph 0
 
@@ -22,13 +22,15 @@ set boxwidth 1.0
 
 set key outside right top vertical Left reverse enhanced autotitles columnhead nobox
 set key invert samplen 4 spacing 1 width 0 height 0
-set style histogram rowstacked title  offset character 0, 0, 0
+#set style histogram rowstacked title  offset character 0, 0, 0
+set style histogram title  offset character 0, 0, 0
 set datafile missing '-'
 set style data histograms
-set title "Running Tasks Over Time\nPlot as stacked histogram"
+set title "Running Tasks Over Time"
+set xlabel "Seconds"
+
+set ylabel "Number of Concurrently Executing Tasks"
 
 set style fill   transparent solid 0.75 noborder
 
-plot 'mr.dat' using 2, for [i=3:9] '' using i
-#plot 'mr.dat' using 2:xtic(1), for [i=3:9] '' using i
-#plot 'mr.dat' using (int($1)%5 == 0 ? $1 : 1/0):xtic(1)
+plot 'tasksovertime.dat' using 2, for [i=3:5] '' using i

@@ -18,7 +18,7 @@ public final class DataSkewGnuplot {
 
   public static void dumpTaskTimes(String... args)
       throws Exception {
-    JobHistory.JobInfo job = JobHistoryHelper.getJobInfo(args[0]);
+    JobHistory.JobInfo job = JobHistoryHelper.getJobInfoFromCliArgs(args);
 
     List<TaskMetrics> mapMetrics =
         JobHistoryHelper.getMapTaskMetrics(job);

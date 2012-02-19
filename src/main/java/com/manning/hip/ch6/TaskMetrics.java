@@ -114,6 +114,38 @@ public class TaskMetrics {
     return this;
   }
 
+  public long getOverallThroughputBytesPerSecond() {
+    long overallSecs = overallTimeMillis / 1000;
+    if(overallSecs == 0) {
+      return 0;
+    }
+    return inputBytes / overallSecs;
+  }
+
+  public long getShuffleThroughputBytesPerSecond() {
+    long overallSecs = shuffleTimeMillis / 1000;
+    if(overallSecs == 0) {
+      return 0;
+    }
+    return inputBytes / overallSecs;
+  }
+
+  public long getSortThroughputBytesPerSecond() {
+    long overallSecs = sortTimeMillis / 1000;
+    if(overallSecs == 0) {
+      return 0;
+    }
+    return inputBytes / overallSecs;
+  }
+
+  public long getReduceThroughputBytesPerSecond() {
+    long overallSecs = (overallTimeMillis - (shuffleTimeMillis + sortTimeMillis)) / 1000;
+    if(overallSecs == 0) {
+      return 0;
+    }
+    return inputBytes / overallSecs;
+  }
+
   public static int longCompare(long lhs, long rhs) {
     return lhs < rhs ? -1 : ( lhs == rhs ? 0 : 1);
   }
@@ -136,6 +168,13 @@ public class TaskMetrics {
     @Override
     public int compare(TaskMetrics o1, TaskMetrics o2) {
       return longCompare(o1.getInputBytes(), o2.getInputBytes());
+    }
+  }
+
+  public static class OverallThroughputComparator implements Comparator<TaskMetrics> {
+    @Override
+    public int compare(TaskMetrics o1, TaskMetrics o2) {
+      return longCompare(o1.getOverallThroughputBytesPerSecond(), o2.getOverallThroughputBytesPerSecond());
     }
   }
 }

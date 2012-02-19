@@ -7,9 +7,11 @@ import org.apache.hadoop.mapred.JobHistory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-public final class DataSkewMetrics {
+public final class TaskThroughput {
 
   public static void main(String... args) throws Exception {
     try {
@@ -35,26 +37,15 @@ public final class DataSkewMetrics {
 
     decorateHeader("MAP TASKS");
 
-    dumpTasks(mapMetrics, "execution time",
-        new TaskMetrics.ExecTimeComparator(), "getOverallTimeMillis",
-        true);
-    dumpTasks(mapMetrics, "input records",
-        new TaskMetrics.InputRecordsComparator(), "getInputRecords",
-        false);
-    dumpTasks(mapMetrics, "input bytes",
-        new TaskMetrics.InputBytesComparator(), "getInputBytes",
-        false);
+    dumpTasks(mapMetrics, "throughput",
+        new TaskMetrics.OverallThroughputComparator(), "getOverallThroughputBytesPerSecond",
+        false, false);
 
     decorateHeader("REDUCE TASKS");
 
-    dumpTasks(reduceMetrics, "execution time",
-        new TaskMetrics.ExecTimeComparator(), "getOverallTimeMillis", true);
-    dumpTasks(reduceMetrics, "input records",
-        new TaskMetrics.InputRecordsComparator(), "getInputRecords",
-        false);
-    dumpTasks(reduceMetrics, "input bytes",
-        new TaskMetrics.InputBytesComparator(), "getInputBytes",
-        false);
+    dumpTasks(reduceMetrics, "throughput",
+        new TaskMetrics.OverallThroughputComparator(), "getOverallThroughputBytesPerSecond",
+        false, true);
   }
 
   public static void decorateHeader(String header) {
@@ -67,7 +58,8 @@ public final class DataSkewMetrics {
                                String heading,
                                Comparator<TaskMetrics> comparator,
                                String fieldName,
-                               boolean isTime)
+                               boolean isTime,
+                               boolean isReduce)
       throws IllegalAccessException, InvocationTargetException,
       NoSuchMethodException {
 
@@ -82,11 +74,26 @@ public final class DataSkewMetrics {
         .addColumnTitle("TaskId")
         .addColumnTitle("Status")
         .addColumnTitle("Host")
-        .addColumnTitle("ExecutionTime")
-        .addColumnTitle("InputBytes")
+        .addColumnTitle("ExecutionTime");
+
+    if(isReduce) {
+      table
+          .addColumnTitle("ShuffleTime")
+          .addColumnTitle("SortTime");
+    }
+
+        table.addColumnTitle("InputBytes")
         .addColumnTitle("OutputBytes")
         .addColumnTitle("InputRecords")
-        .addColumnTitle("OputputRecords");
+        .addColumnTitle("OputputRecords")
+        .addColumnTitle("Overall Throughput (B/s)");
+
+    if(isReduce) {
+      table
+          .addColumnTitle("ShuffleThroughput")
+          .addColumnTitle("SortThroughput")
+          .addColumnTitle("ReduceThroughput");
+    }
 
     Collections.sort(metrics, comparator);
     Collections.reverse(metrics);
@@ -107,11 +114,26 @@ public final class DataSkewMetrics {
           .addColumnValue(m.getStatus())
           .addColumnValue(m.getHost())
           .addColumnValue(JobHistoryHelper.formatTime(
-              m.getOverallTimeMillis()))
-          .addColumnValue(m.getInputBytes())
+              m.getOverallTimeMillis()));
+
+      if(isReduce) {
+        table.addColumnValue(JobHistoryHelper.formatTime(
+            m.getShuffleTimeMillis()))
+            .addColumnValue(JobHistoryHelper.formatTime(
+                m.getSortTimeMillis()));
+      }
+
+          table.addColumnValue(m.getInputBytes())
           .addColumnValue(m.getOutputBytes())
           .addColumnValue(m.getInputRecords())
-          .addColumnValue(m.getOutputRecords());
+          .addColumnValue(m.getOutputRecords())
+          .addColumnValue(m.getOverallThroughputBytesPerSecond());
+
+      if(isReduce) {
+        table.addColumnValue(m.getShuffleThroughputBytesPerSecond())
+            .addColumnValue(m.getSortThroughputBytesPerSecond())
+            .addColumnValue(m.getReduceThroughputBytesPerSecond());
+      }
     }
 
     System.out.println();

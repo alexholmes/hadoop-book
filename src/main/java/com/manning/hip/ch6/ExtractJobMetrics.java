@@ -2,8 +2,6 @@ package com.manning.hip.ch6;
 
 
 import com.manning.hip.common.PaddedTable;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.mapred.*;
 
 import java.text.ParseException;
@@ -24,14 +22,7 @@ public final class ExtractJobMetrics {
   public static void dumpTaskTimes(String... args)
       throws Exception {
 
-    String outputFile = args[0];
-
-    Configuration conf = new Configuration();
-
-    FileSystem fs = FileSystem.getLocal(conf);
-
-    JobHistory.JobInfo job = new JobHistory.JobInfo("");
-    DefaultJobHistoryParser.parseJobTasks(outputFile, job, fs);
+    JobHistory.JobInfo job = JobHistoryHelper.getJobInfoFromCliArgs(args);
 
     printAllTaskAttempts(job);
   }

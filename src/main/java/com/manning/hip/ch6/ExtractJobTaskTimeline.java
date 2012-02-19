@@ -1,8 +1,6 @@
 package com.manning.hip.ch6;
 
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.mapred.*;
 
 import java.util.*;
@@ -21,15 +19,7 @@ public final class ExtractJobTaskTimeline {
   public static void dumpTaskTimes(String... args)
       throws Exception {
 
-    String outputFile = args[0];
-
-    Configuration conf = new Configuration();
-
-    FileSystem fs = FileSystem.getLocal(conf);
-
-
-    JobHistory.JobInfo job = new JobHistory.JobInfo("");
-    DefaultJobHistoryParser.parseJobTasks(outputFile, job, fs);
+    JobHistory.JobInfo job = JobHistoryHelper.getJobInfoFromCliArgs(args);
 
     long startTime = job.getLong(JobHistory.Keys.LAUNCH_TIME);
     long endTime = job.getLong(JobHistory.Keys.FINISH_TIME);
@@ -38,10 +28,6 @@ public final class ExtractJobTaskTimeline {
     List<TimeRange> reduceRanges = new ArrayList<TimeRange>();
     List<TimeRange> shuffleRanges = new ArrayList<TimeRange>();
     List<TimeRange> sortRanges = new ArrayList<TimeRange>();
-    List<TimeRange> setupRanges = new ArrayList<TimeRange>();
-    List<TimeRange> cleanupRanges = new ArrayList<TimeRange>();
-    List<TimeRange> failedRanges = new ArrayList<TimeRange>();
-    List<TimeRange> killedRanges = new ArrayList<TimeRange>();
 
 
     Map<String, JobHistory.Task> tasks = job.getAllTasks();
@@ -65,12 +51,6 @@ public final class ExtractJobTaskTimeline {
             new TimeRange(TimeUnit.MILLISECONDS, taskStartTime,
                 taskEndTime);
 
-        if(JobHistory.Values.FAILED.name().equals(taskStatus)) {
-          failedRanges.add(range);
-        }
-        else if(JobHistory.Values.KILLED.name().equals(taskStatus)) {
-            killedRanges.add(range);
-        } else {
           if (JobHistory.Values.MAP.name().equals(taskType)) {
             mapRanges.add(range);
           } else if (JobHistory.Values.REDUCE.name().equals(taskType)) {
@@ -89,11 +69,6 @@ public final class ExtractJobTaskTimeline {
             reduceRanges.add(
                 new TimeRange(TimeUnit.MILLISECONDS, sortEndTime,
                     taskEndTime));
-          } else if (JobHistory.Values.SETUP.name().equals(taskType)) {
-            setupRanges.add(range);
-          } else if (JobHistory.Values.CLEANUP.name().equals(taskType)) {
-            cleanupRanges.add(range);
-          }
           }
       }
     }
@@ -102,15 +77,11 @@ public final class ExtractJobTaskTimeline {
     // time-offset  #-map-tasks  #-reduce-tasks  #-shuffle-tasks  #-sort-tasks  #-waste-tasks
     // steps of 1 second
     StringBuilder sb = new StringBuilder();
-    sb.append("TIME")
-        .append("\tMAP")
-        .append("\tREDUCE")
-        .append("\tSHUFFLE")
-        .append("\tSORT")
-        .append("\tSETUP")
-        .append("\tCLEANUP")
-        .append("\tFAILED")
-        .append("\tKILLED")
+    sb.append("time")
+        .append("\tmap")
+        .append("\treduce")
+        .append("\tshuffle")
+        .append("\tsort")
     ;
     System.err.println(sb);
 
@@ -122,10 +93,6 @@ public final class ExtractJobTaskTimeline {
           .append("\t").append(countRangesForTime(reduceRanges, i))
           .append("\t").append(countRangesForTime(shuffleRanges, i))
           .append("\t").append(countRangesForTime(sortRanges, i))
-          .append("\t").append(countRangesForTime(setupRanges, i))
-          .append("\t").append(countRangesForTime(cleanupRanges, i))
-          .append("\t").append(countRangesForTime(failedRanges, i))
-          .append("\t").append(countRangesForTime(killedRanges, i))
       ;
 
       System.err.println(sb);

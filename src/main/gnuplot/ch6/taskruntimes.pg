@@ -27,9 +27,6 @@ set ytics nomirror
 
 set boxwidth 1
 
-set xlabel "Tasks"
-
-set ylabel "Task Execution Times in Seconds"
 
 set style data boxes
 set title "Map Execution Times"

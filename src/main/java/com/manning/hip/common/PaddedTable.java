@@ -31,6 +31,11 @@ public class PaddedTable {
     return this;
   }
 
+  public PaddedTable clearRows() {
+    rows.clear();
+    return this;
+  }
+
   public PaddedTable addColumnValue(String value) {
     addColumnValueNoAbbreviate(abbreviate(value));
     return this;
@@ -59,7 +64,7 @@ public class PaddedTable {
   }
 
   public PaddedTable addColumnValue(double value) {
-    String valueAsString = String.format("%0,2f", value);
+    String valueAsString = String.format("%.2f", value);
 
     addColumnValueNoAbbreviate(valueAsString);
     return this;
