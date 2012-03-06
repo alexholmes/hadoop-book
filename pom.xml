@@ -328,6 +328,12 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.apache.mahout</groupId>
+      <artifactId>mahout-core</artifactId>
+      <version>0.5-cdh3u2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>com.googlecode.json-simple</groupId>
       <artifactId>json-simple</artifactId>
       <version>1.1</version>
