@@ -1,3 +1,0 @@
-Smith	John
-Smith	Anne
-Smith	Ken
