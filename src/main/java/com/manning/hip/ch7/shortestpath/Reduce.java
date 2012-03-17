@@ -52,7 +52,7 @@ public class Reduce
 
     if(shortestAdjacentNode != null) {
       originalNode.setDistance(minDistance);
-      originalNode.setBackpointers(shortestAdjacentNode.getBackpointers());
+      originalNode.setBackpointer(shortestAdjacentNode.getBackpointer());
     }
 
     outValue.set(originalNode.toString());
@@ -67,7 +67,7 @@ public class Reduce
           PathCounter.TARGET_NODE_DISTANCE_COMPUTED);
       counter.increment(minDistance);
       context.getCounter(PathCounter.PATH.toString(),
-          shortestAdjacentNode.getBackpointers()).increment(1);
+          shortestAdjacentNode.getBackpointer()).increment(1);
     }
   }
 }

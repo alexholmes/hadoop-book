@@ -33,10 +33,10 @@ public class Map
       //
       int neighborDistance = node.getDistance() + 1;
 
-      // create the backpointers, which will append our own
+      // create the backpointer, which will append our own
       // node name to the list
       //
-      String backpointers = node.constructBackpointers(key.toString());
+      String backpointer = node.constructBackpointer(key.toString());
 
       // go through all the nodes and propagate the distance to them
       //
@@ -44,13 +44,13 @@ public class Map
 
         String neighbor = node.getAdjacentNodeNames()[i];
 
-        // output the neighbor with the propagated distance and backpointers
+        // output the neighbor with the propagated distance and backpointer
         //
         outKey.set(neighbor);
 
         Node adjacentNode = new Node()
             .setDistance(neighborDistance)
-            .setBackpointers(backpointers);
+            .setBackpointer(backpointer);
 
         outValue.set(adjacentNode.toString());
         System.out.println(

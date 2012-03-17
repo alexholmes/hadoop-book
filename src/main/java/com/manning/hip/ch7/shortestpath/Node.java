@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class Node {
   private int distance = INFINITE;
-  private String backpointers;
+  private String backpointer;
   private String[] adjacentNodeNames;
 
   public static int INFINITE = Integer.MAX_VALUE;
@@ -22,19 +22,19 @@ public class Node {
     return this;
   }
 
-  public String getBackpointers() {
-    return backpointers;
+  public String getBackpointer() {
+    return backpointer;
   }
 
-  public Node setBackpointers(String backpointers) {
-    this.backpointers = backpointers;
+  public Node setBackpointer(String backpointer) {
+    this.backpointer = backpointer;
     return this;
   }
 
-  public String constructBackpointers(String name) {
+  public String constructBackpointer(String name) {
     StringBuilder backpointers = new StringBuilder();
-    if (StringUtils.trimToNull(getBackpointers()) != null) {
-      backpointers.append(getBackpointers()).append(":");
+    if (StringUtils.trimToNull(getBackpointer()) != null) {
+      backpointers.append(getBackpointer()).append(":");
     }
     backpointers.append(name);
     return backpointers.toString();
@@ -62,7 +62,7 @@ public class Node {
     StringBuilder sb = new StringBuilder();
     sb.append(distance)
         .append(fieldSeparator)
-        .append(backpointers);
+        .append(backpointer);
 
     if (getAdjacentNodeNames() != null) {
       sb.append(fieldSeparator)
@@ -81,7 +81,7 @@ public class Node {
     }
     Node node = new Node()
         .setDistance(Integer.valueOf(parts[0]))
-        .setBackpointers(StringUtils.trimToNull(parts[1]));
+        .setBackpointer(StringUtils.trimToNull(parts[1]));
     if (parts.length > 2) {
       node.setAdjacentNodeNames(Arrays.copyOfRange(parts, 2,
           parts.length));
