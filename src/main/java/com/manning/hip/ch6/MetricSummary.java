@@ -63,26 +63,29 @@ public final class MetricSummary {
     System.out.println(table);
     table.clearRows();
 
-    dumpTasks(table, reduceMetrics, "execution time",
-        "getOverallTimeMillis", true);
-    dumpTasks(table, reduceMetrics, "shuffle time",
-        "getShuffleTimeMillis", true);
-    dumpTasks(table, reduceMetrics, "sort time", "getSortTimeMillis",
-        true);
-    dumpTasks(table, reduceMetrics, "input records", "getInputRecords",
-        false);
-    dumpTasks(table, reduceMetrics, "input bytes", "getInputBytes",
-        false);
-    dumpTasks(table, reduceMetrics, "output records",
-        "getOutputRecords", false);
-    dumpTasks(table, reduceMetrics, "output bytes", "getOutputBytes",
-        false);
+    if(reduceMetrics.size() > 0) {
 
-    DataSkewMetrics.decorateHeader("REDUCE TASKS");
-    System.out.println("");
-    System.out.println("Num Reduce Tasks: " + reduceMetrics.size());
-    System.out.println("");
-    System.out.println(table);
+      dumpTasks(table, reduceMetrics, "execution time",
+          "getOverallTimeMillis", true);
+      dumpTasks(table, reduceMetrics, "shuffle time",
+          "getShuffleTimeMillis", true);
+      dumpTasks(table, reduceMetrics, "sort time", "getSortTimeMillis",
+          true);
+      dumpTasks(table, reduceMetrics, "input records", "getInputRecords",
+          false);
+      dumpTasks(table, reduceMetrics, "input bytes", "getInputBytes",
+          false);
+      dumpTasks(table, reduceMetrics, "output records",
+          "getOutputRecords", false);
+      dumpTasks(table, reduceMetrics, "output bytes", "getOutputBytes",
+          false);
+
+      DataSkewMetrics.decorateHeader("REDUCE TASKS");
+      System.out.println("");
+      System.out.println("Num Reduce Tasks: " + reduceMetrics.size());
+      System.out.println("");
+      System.out.println(table);
+    }
   }
 
   public static void dumpTasks(PaddedTable table,
