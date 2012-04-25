@@ -48,7 +48,7 @@ fi
 echo "Creating database 'sqoop_test' and tables 'stocks', 'stocks_export', 'stocks_staging'"
 
 mysql --user=$user --password=$pwd &> $ddl_out << EOF
-DROP DATABASE sqoop_test;
+DROP DATABASE IF EXISTS sqoop_test;
 CREATE DATABASE sqoop_test;
 
 USE sqoop_test;
