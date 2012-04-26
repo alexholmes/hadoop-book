@@ -24,8 +24,8 @@ reduce <- expression(
   }
 )
 
-input_file <- "stocks.txt"
-output_dir <- "output"
+input_file <- "/tmp/stocks.txt"
+output_dir <- "/tmp/output"
 
 job <- rhmr(
   jobname  = "Rhipe CMA",
