@@ -6,10 +6,6 @@ import java.io.IOException;
 
 public class PigLongGeolocationUDF extends PigGeolocationUDF {
 
-  public PigLongGeolocationUDF(String localGeoPath) {
-    super(localGeoPath);
-  }
-
   public String exec(Tuple input) throws IOException {
     Exception e = new Exception();
     e.printStackTrace();
