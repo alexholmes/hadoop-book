@@ -23,11 +23,6 @@ public class PigGeolocationUDF extends EvalFunc<String> {
   private LookupService geoloc;
   private static final String COUNTRY = "country";
   private final static String DIST_CACHE_GEOIP_NAME = "geoip";
-  private final List<String> distributedCacheFiles;
-
-  public PigGeolocationUDF(String localGeoPath) {
-    this.distributedCacheFiles = Arrays.asList(localGeoPath + "#" + DIST_CACHE_GEOIP_NAME);
-  }
 
   public String exec(Tuple input) throws IOException {
 
@@ -58,18 +53,6 @@ public class PigGeolocationUDF extends EvalFunc<String> {
     }
 
     return country;
-  }
-
-  /**
-   * Only called by Pig versions 0.9 and newer.  With older versions of
-   * Pit you'll need to:
-   * SET mapred.cache.files file:/tmp/GeoIP.dat#geoip;
-   * SET mapred.create.symlink yes;
-   *
-   * @return list of files to put into the DistCache
-   */
-  public List<String> getCacheFiles() {
-    return distributedCacheFiles;
   }
 
   @Override
