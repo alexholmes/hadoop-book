@@ -86,21 +86,34 @@ fi
 # add our JAR
 CLASSPATH="${CLASSPATH}":${HIP_CODE_JAR}
 
-function add_to_hadoop_classpath() {
+function add_to_hadoop_core_classpath() {
   dir=$1
   for f in $dir/*.jar; do
-    HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:$f;
+    HADOOP_CORE_CLASSPATH=${HADOOP_CORE_CLASSPATH}:$f;
   done
 
-  export HADOOP_CLASSPATH
+  export HADOOP_CORE_CLASSPATH
+}
+
+function add_to_hadoop_extlib_classpath() {
+  dir=$1
+  for f in $dir/*.jar; do
+    HADOOP_EXT_CLASSPATH=${HADOOP_EXT_CLASSPATH}:$f;
+  done
+
+  export HADOOP_EXT_CLASSPATH
 }
 
 HADOOP_LIB_DIR=$HADOOP_HOME
-add_to_hadoop_classpath ${HADOOP_LIB_DIR}
+add_to_hadoop_core_classpath ${HADOOP_LIB_DIR}
 HADOOP_LIB_DIR=$HADOOP_HOME/lib
-add_to_hadoop_classpath ${HADOOP_LIB_DIR}
+add_to_hadoop_extlib_classpath ${HADOOP_LIB_DIR}
 
-export CLASSPATH=${CLASSPATH}:${HADOOP_CLASSPATH}
+if [ "${HIP_USE_MVN_HADOOP}" != "" ]; then
+  export CLASSPATH=${CLASSPATH}:${HADOOP_CORE_CLASSPATH}:${HADOOP_EXT_CLASSPATH}:${HADOOP_CLASSPATH}
+else
+  export CLASSPATH=${HADOOP_CORE_CLASSPATH}:${CLASSPATH}:${HADOOP_EXT_CLASSPATH}:${HADOOP_CLASSPATH}
+fi
 
 JAVA=$JAVA_HOME/bin/java
 JAVA_HEAP_MAX=-Xmx512m
