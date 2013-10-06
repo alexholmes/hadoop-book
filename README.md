@@ -18,15 +18,10 @@ of the code is the same has Hadoop 0.20.x.  There are a couple of places
 where I utilize some features in Pig 0.9.1, which won't work with CDH3u1
 which uses 0.8.1.
 
-I've recently run some basic MapReduce jobs against CDH4, however I have
-yet to fix the problems associated with the JobContext changing from a
-class to an interface between Hadoop versions 1 and 2, so I expect the
-following examples to fail:
-
-* CSVInputFormat (chapter 3)
-* JsonInputFormat (chapter 3)
-* ReservoirSamplerInputFormat (chapter 4)
-* CommonLogInputFormat (used in Pig and Hive chapters)
+I've recently run some basic MapReduce jobs against CDH4, and I also updated
+the examples so that they would run against Hadoop 2. Please let me know
+[on the Manning forum](http://www.manning-sandbox.com/forum.jspa?forumID=800) or
+in a [GitHub ticket](https://github.com/alexholmes/hadoop-book/issues) if you encounter any issues.
 
 
 ## Building and running
