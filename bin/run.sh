@@ -68,10 +68,17 @@ fi
 HADOOP_CONF_DIR=${HADOOP_HOME}/conf
 
 if [ ! -d "$HADOOP_CONF_DIR" ]; then
-  echo "$HADOOP_CONF_DIR must be the Hadoop config directory"
-  exit 3;
+
+  OLD_HADOOP_CONF=${HADOOP_CONF_DIR}
+  HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+
+  if [ ! -d "$HADOOP_CONF_DIR" ]; then
+    echo "One of $OLD_HADOOP_CONF or $HADOOP_CONF_DIR must exist"
+    exit 3;
+  fi
 fi
 
+echo "Using ${HADOOP_CONF_DIR} as the Hadoop conf directory"
 
 # classpath initially contains $HADOOP_CONF_DIR
 CLASSPATH="${HADOOP_CONF_DIR}"
@@ -109,10 +116,21 @@ add_to_hadoop_core_classpath ${HADOOP_LIB_DIR}
 HADOOP_LIB_DIR=$HADOOP_HOME/lib
 add_to_hadoop_extlib_classpath ${HADOOP_LIB_DIR}
 
+# CDH4
+HADOOP_LIB_DIR=/usr/lib/hadoop-hdfs/
+add_to_hadoop_core_classpath ${HADOOP_LIB_DIR}
+
+HADOOP_LIB_DIR=/usr/lib/hadoop-yarn
+add_to_hadoop_core_classpath ${HADOOP_LIB_DIR}
+
+HADOOP_LIB_DIR=/usr/lib/hadoop-0.20-mapreduce
+add_to_hadoop_core_classpath ${HADOOP_LIB_DIR}
+
+
 if [ "${HIP_USE_MVN_HADOOP}" != "" ]; then
   export CLASSPATH=${CLASSPATH}:${HADOOP_CORE_CLASSPATH}:${HADOOP_EXT_CLASSPATH}:${HADOOP_CLASSPATH}
 else
-  export CLASSPATH=${HADOOP_CORE_CLASSPATH}:${CLASSPATH}:${HADOOP_EXT_CLASSPATH}:${HADOOP_CLASSPATH}
+  export CLASSPATH=${HADOOP_CORE_CLASSPATH}:${HADOOP_EXT_CLASSPATH}:${HADOOP_CLASSPATH}:${CLASSPATH}
 fi
 
 JAVA=$JAVA_HOME/bin/java
@@ -148,5 +166,14 @@ fi
 
 # echo $CLASSPATH
 # echo ${JAVA_LIBRARY_PATH}
+
+# echo "HADOOP_LIB_DIR=${HADOOP_LIB_DIR}"
+# echo "JAVA_LIBRARY_PATH=${JAVA_LIBRARY_PATH}"
+# echo "HADOOP_CORE_CLASSPATH=${HADOOP_CORE_CLASSPATH}"
+# echo "HADOOP_EXT_CLASSPATH=${HADOOP_EXT_CLASSPATH}"
+
+# CLASSPATH="/etc/hadoop/conf:/usr/lib/hadoop/lib/*:/usr/lib/hadoop/.//*:/usr/lib/hadoop-hdfs/./:/usr/lib/hadoop-hdfs/lib/*:/usr/lib/hadoop-hdfs/.//*:/usr/lib/hadoop-yarn/.//*:/usr/lib/hadoop-0.20-mapreduce/./:/usr/lib/hadoop-0.20-mapreduce/lib/*:/usr/lib/hadoop-0.20-mapreduce/.//*:${HIP_CODE_JAR}"
+
+# echo "$JAVA" $JAVA_HEAP_MAX -Djava.library.path=${JAVA_LIBRARY_PATH} -classpath "$CLASSPATH" "$@"
 
 "$JAVA" $JAVA_HEAP_MAX -Djava.library.path=${JAVA_LIBRARY_PATH} -classpath "$CLASSPATH" "$@"
