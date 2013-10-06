@@ -1,5 +1,6 @@
 package com.manning.hip.ch3.passwd;
 
+import com.manning.hip.common.HadoopCompat;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -113,7 +114,7 @@ public class PasswdOutputFormat<K, V>
   public RecordWriter<K, V>
   getRecordWriter(TaskAttemptContext job
   ) throws IOException, InterruptedException {
-    Configuration conf = job.getConfiguration();
+    Configuration conf = HadoopCompat.getConfiguration(job);
     boolean isCompressed = getCompressOutput(job);
     CompressionCodec codec = null;
     String extension = "";

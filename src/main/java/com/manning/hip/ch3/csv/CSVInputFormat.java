@@ -1,6 +1,7 @@
 package com.manning.hip.ch3.csv;
 
 import com.manning.hip.ch3.TextArrayWritable;
+import com.manning.hip.common.HadoopCompat;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -31,7 +32,7 @@ public class CSVInputFormat extends
   public RecordReader<LongWritable, TextArrayWritable>
   createRecordReader(InputSplit split,
                      TaskAttemptContext context) {
-    String csvDelimiter = context.getConfiguration().get( //<co id="ch02_comment_csv_inputformat1"/>
+    String csvDelimiter = HadoopCompat.getConfiguration(context).get( //<co id="ch02_comment_csv_inputformat1"/>
         CSV_TOKEN_SEPARATOR_CONFIG);
 
     Character separator = null;
@@ -45,7 +46,7 @@ public class CSVInputFormat extends
   @Override
   protected boolean isSplitable(JobContext context, Path file) {
     CompressionCodec codec =
-        new CompressionCodecFactory(context.getConfiguration())
+        new CompressionCodecFactory(HadoopCompat.getConfiguration(context))
             .getCodec(file);
     return codec == null;    //<co id="ch02_comment_csv_inputformat3"/>
   }

@@ -1,5 +1,6 @@
 package com.manning.hip.ch4.sampler;
 
+import com.manning.hip.common.HadoopCompat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.*;
@@ -93,7 +94,7 @@ public class ReservoirSamplerInputFormat<K extends Writable, V extends Writable>
   @Override
   public List<InputSplit> getSplits(JobContext context)
       throws IOException, InterruptedException {
-    return getInputFormat(context.getConfiguration())
+    return getInputFormat(HadoopCompat.getConfiguration(context))
         .getSplits(context);
   }
 
@@ -103,7 +104,7 @@ public class ReservoirSamplerInputFormat<K extends Writable, V extends Writable>
                                          TaskAttemptContext context)
       throws IOException, InterruptedException {
 
-    Configuration conf = context.getConfiguration();
+    Configuration conf = HadoopCompat.getConfiguration(context);
 
     return new ReservoirSamplerRecordReader(context,
         getInputFormat(conf).createRecordReader(split, context),
@@ -128,7 +129,7 @@ public class ReservoirSamplerInputFormat<K extends Writable, V extends Writable>
                                         RecordReader<K, V> rr,
                                         int numSamples,
                                         int maxRecords) {
-      this.conf = context.getConfiguration();
+      this.conf = HadoopCompat.getConfiguration(context);
       this.rr = rr;
       this.numSamples = numSamples;
       this.maxRecords = maxRecords;

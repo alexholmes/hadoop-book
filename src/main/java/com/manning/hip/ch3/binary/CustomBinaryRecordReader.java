@@ -1,5 +1,6 @@
 package com.manning.hip.ch3.binary;
 
+import com.manning.hip.common.HadoopCompat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -31,7 +32,7 @@ public class CustomBinaryRecordReader
                          TaskAttemptContext context)
       throws IOException, InterruptedException {
     FileSplit split = (FileSplit) genericSplit;
-    Configuration job = context.getConfiguration();
+    Configuration job = HadoopCompat.getConfiguration(context);
 
     System.out.println("Start = " + split.getStart());
     System.out.println("Length = " + split.getLength());

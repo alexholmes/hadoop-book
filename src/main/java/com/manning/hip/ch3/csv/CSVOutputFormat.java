@@ -1,6 +1,7 @@
 package com.manning.hip.ch3.csv;
 
 import com.manning.hip.ch3.TextArrayWritable;
+import com.manning.hip.common.HadoopCompat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -28,7 +29,7 @@ public class CSVOutputFormat extends
   @Override
   public RecordWriter getRecordWriter(TaskAttemptContext job)
       throws IOException, InterruptedException {
-    Configuration conf = job.getConfiguration();
+    Configuration conf = HadoopCompat.getConfiguration(job);
     boolean isCompressed = getCompressOutput(job);
     String
         keyValueSeparator =

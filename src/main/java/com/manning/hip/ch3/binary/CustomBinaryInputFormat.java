@@ -1,5 +1,6 @@
 package com.manning.hip.ch3.binary;
 
+import com.manning.hip.common.HadoopCompat;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -108,7 +109,7 @@ public class CustomBinaryInputFormat extends
       if(prevPath == null || !prevPath.equals(file)) {
         prevPath = file;
         // Load the offsets in the file
-        offsets = getFileOffest(job.getConfiguration(), file);
+        offsets = getFileOffest(HadoopCompat.getConfiguration(job), file);
       }
 
       long start = fileSplit.getStart();
@@ -116,7 +117,7 @@ public class CustomBinaryInputFormat extends
 
       long newStart = alignSliceStartToIndex(offsets, start, end);
       long newEnd = alignSliceEndToIndex(offsets, end,
-          file.getFileSystem(job.getConfiguration())
+          file.getFileSystem(HadoopCompat.getConfiguration(job))
               .getFileStatus(file).getLen());
 
       if(newStart != -1 || newEnd != -1) {

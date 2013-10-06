@@ -30,7 +30,7 @@ public class CommonLogInputFormat
   @Override
   protected boolean isSplitable(JobContext context, Path file) {
     CompressionCodec codec =
-      new CompressionCodecFactory(context.getConfiguration())
+      new CompressionCodecFactory(HadoopCompat.getConfiguration(context))
         .getCodec(file);
     return codec == null;
   }

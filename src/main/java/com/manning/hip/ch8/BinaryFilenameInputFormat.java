@@ -1,6 +1,7 @@
 package com.manning.hip.ch8;
 
 import com.manning.hip.ch3.passwd.Passwd;
+import com.manning.hip.common.HadoopCompat;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
@@ -35,7 +36,7 @@ public class BinaryFilenameInputFormat extends
   @Override
   protected boolean isSplitable(JobContext context, Path file) {
     CompressionCodec codec =
-        new CompressionCodecFactory(context.getConfiguration())
+        new CompressionCodecFactory(HadoopCompat.getConfiguration(context))
             .getCodec(file);
     return codec == null;
   }

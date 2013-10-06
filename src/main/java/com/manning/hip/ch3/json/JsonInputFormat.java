@@ -1,5 +1,6 @@
 package com.manning.hip.ch3.json;
 
+import com.manning.hip.common.HadoopCompat;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.io.compress.*;
@@ -31,7 +32,7 @@ public class JsonInputFormat
   @Override
   protected boolean isSplitable(JobContext context, Path file) {
     CompressionCodec codec =
-        new CompressionCodecFactory(context.getConfiguration())
+        new CompressionCodecFactory(HadoopCompat.getConfiguration(context))
             .getCodec(file);
     return codec == null;
   }

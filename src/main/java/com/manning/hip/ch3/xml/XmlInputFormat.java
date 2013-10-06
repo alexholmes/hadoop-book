@@ -17,6 +17,7 @@
 
 package com.manning.hip.ch3.xml;
 
+import com.manning.hip.common.HadoopCompat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
 import org.apache.hadoop.io.*;
@@ -42,7 +43,7 @@ public class XmlInputFormat extends TextInputFormat {
       InputSplit split, TaskAttemptContext context) {
     try {
       return new XmlRecordReader((FileSplit) split,
-          context.getConfiguration());
+          HadoopCompat.getConfiguration(context));
     } catch (IOException ioe) {
       log.warn("Error while creating XmlRecordReader", ioe);
       return null;
