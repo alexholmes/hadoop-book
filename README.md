@@ -1,12 +1,10 @@
 Source code for book "Hadoop in Practice", Manning Publishing
 =============================================================
 
-## Code Stability
+## Overview
 
-The book is currently in the middle of being authored, and as such the
-code in this repository will be changing until we get closer to the
-production stage.  With that being said, most of the code in GitHub has been
-exercised at least once.
+This repo contains the code, scripts and data files that are referenced
+from the book [Hadoop in Practice](http://www.manning.com/holmes/), published by Manning.
 
 ##  Issues
 
@@ -20,11 +18,15 @@ of the code is the same has Hadoop 0.20.x.  There are a couple of places
 where I utilize some features in Pig 0.9.1, which won't work with CDH3u1
 which uses 0.8.1.
 
-## Code Comments
+I've recently run some basic MapReduce jobs against CDH4, however I have
+yet to fix the problems associated with the JobContext changing from a
+class to an interface between Hadoop versions 1 and 2, so I expect the
+following examples to fail:
 
-Most of the code is lacking in comments as Manning doesn't like the
-book samples to contain traditional comments.  I'll be adding comments
-when we get nearer to production.
+* CSVInputFormat (chapter 3)
+* JsonInputFormat (chapter 3)
+* ReservoirSamplerInputFormat (chapter 4)
+* CommonLogInputFormat (used in Pig and Hive chapters)
 
 
 ## Building and running
@@ -47,7 +49,7 @@ you may get runtime errors if you don't have them installed and configured
 in your cluster.
 
 Snappy can be installed on CDH by following the instructions at
- https://ccp.cloudera.com/display/CDHDOC/Snappy+Installation.
+https://ccp.cloudera.com/display/CDHDOC/Snappy+Installation.
 
 To install LZOP follow the instructions at https://github.com/kevinweil/hadoop-lzo.
 
