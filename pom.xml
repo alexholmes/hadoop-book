@@ -57,7 +57,11 @@
           <target>${jdkLevel}</target>
           <showDeprecation>true</showDeprecation>
           <showWarnings>true</showWarnings>
-
+          <!-- Exclude the Crunch code, since Cloudera removed the artifacts from
+          their repo. -->
+          <excludes>
+            <exclude>com/manning/hip/ch12/crunch/*.java</exclude>
+          </excludes>
         </configuration>
       </plugin>
 
@@ -216,9 +220,9 @@
       </snapshots>
     </repository>
     <repository>
-      <id>cloudera-releases</id>
+      <id>cloudera-artifactory-releases</id>
       <url>
-        https://repository.cloudera.com/content/repositories/releases/
+        https://repository.cloudera.com/artifactory/cloudera-repos/
       </url>
       <releases>
         <enabled>true</enabled>
@@ -275,9 +279,9 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>com.cloudera.crunch</groupId>
-      <artifactId>crunch</artifactId>
-      <version>0.1.0</version>
+      <groupId>org.apache.crunch</groupId>
+      <artifactId>crunch-core</artifactId>
+      <version>0.9.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.thrift</groupId>
@@ -330,8 +334,7 @@
     <dependency>
       <groupId>org.apache.mahout</groupId>
       <artifactId>mahout-core</artifactId>
-      <version>0.5-cdh3u2</version>
-      <scope>compile</scope>
+      <version>0.9</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>
