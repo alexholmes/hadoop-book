@@ -68,7 +68,7 @@ public class ReservoirSamplerInputFormat<K extends Writable, V extends Writable>
     }
     int numMapTasks = conf.getInt("mapred.map.tasks", 1);
 
-    return (int) Math.ceil(numSamples / numMapTasks);
+    return (int) Math.ceil((double)numSamples / (double)numMapTasks);
   }
 
   public static int getMaxRecordsToRead(Configuration conf) {
